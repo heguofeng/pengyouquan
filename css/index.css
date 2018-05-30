@@ -1,0 +1,172 @@
+.container {
+    width: 100%;
+    font-size: 0.14rem;
+    background-color: #fff;
+}
+
+.head {
+    height: 2.55rem;
+    width: 100%;
+    /* overflow: hidden; */
+    box-sizing: border-box;
+    background: #000 url("../imgs/bg.jpg") no-repeat;
+    background-size: cover;
+    background-position: bottom left;
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.camera {
+    width: 0.3rem;
+    /* height: 0.4rem; */
+    position: absolute;
+    top: 0.05rem;
+    right: 0.1rem;
+}
+
+.camera img {
+    width: 100%;
+}
+
+.avatar {
+    width: 0.75rem;
+    height: 0.75rem;
+    border: 0.025rem solid #fff;
+    position: absolute;
+    box-sizing: border-box;
+    bottom: -0.24rem;
+    right: 0.1rem;
+    z-index: 10;
+    box-shadow: #ccc 0 0 1px 1px;
+}
+
+.avatar img {
+    width: 0.7rem;
+    display: block;
+}
+
+.nickName {
+    position: absolute;
+    bottom: 0.12rem;
+    right: 1.07rem;
+    color: #fff;
+    font-size: 0.16rem;
+    text-shadow: 0px 1px 1px #000;
+}
+
+.content {
+    width: 100%;
+}
+
+.item {
+    padding: 0.16rem 0.12rem;
+    border-bottom: 0.01rem solid #f2f2f2;
+    zoom: 1;
+}
+
+.item::after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.item-avatar {
+    width: 0.43rem;
+    height: 0.43rem;
+    float: left;
+}
+
+.item-avatar img {
+    width: 100%;
+    display: block;
+}
+
+.item-content {
+    float: left;
+    padding-left: 0.1rem;
+    width: 2.98rem;
+    font-size: 0.16rem;
+}
+
+.title {
+    color: #586c8a;
+    line-height: 0.24rem;
+    font-weight: 700;
+}
+
+.txt {
+    line-height: 0.22rem;
+    overflow: hidden;
+    margin-top: 0.04rem;
+}
+
+
+/* .txt-show {} */
+
+.txt-hide {
+    max-height: 1.32rem;
+}
+
+.more {
+    color: #586c8a;
+    padding-top: 0.03rem;
+}
+
+.imgs {
+    margin-top: 0.1rem;
+}
+
+.imgs::after {
+    content: "";
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+
+
+/* 单张图片 */
+
+.item-img {
+    max-width: 1.8rem;
+    max-height: 1.8rem;
+}
+
+.item-img img {
+    width: 100%;
+    display: block;
+}
+
+
+/* 四张图片 */
+
+
+/* 多张图片 */
+
+.item-imgs {
+    width: .8rem;
+    height: .8rem;
+    float: left;
+    margin-right: 0.06rem;
+    margin-bottom: 0.06rem;
+    overflow: hidden;
+}
+
+.width img {
+    width: 100%;
+    display: block;
+}
+
+.height img {
+    height: 100%;
+    display: block;
+}
+
+.time {
+    font-size: 0.12rem;
+    color: #9a9a9a;
+    line-height: 1;
+    margin-top: 0.08rem;
+}
