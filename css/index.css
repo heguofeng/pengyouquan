@@ -9,7 +9,7 @@
     width: 100%;
     /* overflow: hidden; */
     box-sizing: border-box;
-    background: #000 url("../imgs/bg.jpg") no-repeat;
+    background: #000 url("../imgs/6.jpg") no-repeat;
     background-size: cover;
     background-position: bottom left;
     position: relative;
@@ -116,9 +116,22 @@
 
 .imgs {
     margin-top: 0.1rem;
+    zoom: 1;
 }
 
 .imgs::after {
+    content: "";
+    height: 0;
+    display: block;
+    clear: both;
+    visibility: hidden;
+}
+
+.imgs li {
+    zoom: 1;
+}
+
+.imgs li::after {
     content: "";
     height: 0;
     display: block;
@@ -132,6 +145,7 @@
 .item-img {
     max-width: 1.8rem;
     max-height: 1.8rem;
+    /* float: left; */
 }
 
 .item-img img {

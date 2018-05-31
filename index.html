@@ -13,37 +13,41 @@
 </head>
 
 <body>
+    <!-- body 顶部加上如下代码 -->
+    <div class="weui-pull-to-refresh__layer">
+        <div class='weui-pull-to-refresh__arrow'></div>
+        <div class='weui-pull-to-refresh__preloader'></div>
+        <div class="down">下拉刷新</div>
+        <div class="up">释放刷新</div>
+        <div class="refresh">正在刷新</div>
+    </div>
     <div class="container">
         <div class="head">
             <div class="camera">
                 <img src="./imgs/camera.png" alt="发布">
             </div>
             <div class="avatar">
-                <img src="./imgs/avatar.jpg" alt="头像">
+                <img src="./imgs/a1.jpg" alt="头像">
             </div>
             <p class="nickName">西装暴徒</p>
         </div>
         <!-- head结束 -->
-        <div class="content">
-            <ul>
-                <li class="item">
+        <div class="content" id="content">
+            <ul class="content_ul">
+                <!-- <li class="item">
                     <div class="item-avatar">
-                        <img src="./imgs/avatar.jpg" alt="头像">
+                        <img src="./imgs/a1.jpg" alt="头像">
                     </div>
                     <div class="item-content">
                         <p class="title">麻花藤tony</p>
                         <div class="txt">
                             用心创造快乐，没钱玩你麻痹 <br> 用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
+
                         </div>
                         <div class="more"><span>全文</span></div>
                         <ul class="imgs">
                             <li class="item-imgs">
-                                <img src="./imgs/image.jpg" alt="">
+                                <img src="./imgs/1.jpg" alt="">
                             </li>
                         </ul>
                         <p class="time">1小时前</p>
@@ -66,10 +70,10 @@
                         <ul class="imgs">
 
                             <li class="item-imgs">
-                                <img src="./imgs/image.jpg" alt="">
+                                <img src="./imgs/1.jpg" alt="">
                             </li>
                             <li class="item-imgs">
-                                <img src="./imgs/22.jpg" alt="">
+                                <img src="./imgs/2.jpg" alt="">
                             </li>
                         </ul>
                         <p class="time">1小时前</p>
@@ -77,7 +81,7 @@
                 </li>
                 <li class="item">
                     <div class="item-avatar">
-                        <img src="./imgs/mei.png" alt="头像">
+                        <img src="./imgs/my.jpg" alt="头像">
                     </div>
                     <div class="item-content">
                         <p class="title">麻花藤</p>
@@ -102,7 +106,7 @@
                 </li>
                 <li class="item">
                     <div class="item-avatar">
-                        <img src="./imgs/avatar.jpg" alt="头像">
+                        <img src="./imgs/mht.jpg" alt="头像">
                     </div>
                     <div class="item-content">
                         <p class="title">麻花藤</p>
@@ -110,30 +114,35 @@
                         <div class="more">全文</div>
                         <ul class="imgs">
                             <li class="item-imgs">
-                                <img src="./imgs/111.png" alt="">
+                                <img src="./imgs/1.jpg" alt="">
                             </li>
                             <li class="item-imgs">
-                                <img src="./imgs/avatar.jpg" alt="">
+                                <img src="./imgs/2.jpg" alt="">
                             </li>
                             <li class="item-imgs">
-                                <img src="./imgs/image.jpg" alt="">
+                                <img src="./imgs/3.jpg" alt="">
                             </li>
                             <li class="item-imgs">
-                                <img src="./imgs/22.jpg" alt="">
+                                <img src="./imgs/4.jpg" alt="">
                             </li>
                             <li class="item-imgs">
-                                <img src="./imgs/22.jpg" alt="">
+                                <img src="./imgs/5.jpg" alt="">
                             </li>
                         </ul>
                         <p class="time">1小时前</p>
                     </div>
-                </li>
+                </li> -->
             </ul>
         </div>
+    </div>
+    <div class="weui-loadmore">
+        <i class="weui-loading"></i>
+        <span class="weui-loadmore__tips">正在加载</span>
     </div>
 </body>
 <script src="./js/jquery.min.js"></script>
 <script src="./js/jquery-weui.min.js"></script>
-<script src="./js/index.js"></script>
+<script src="./js/swiper.min.js"></script>
+<script src="./js/index.js?1"></script>
 
 </html>
