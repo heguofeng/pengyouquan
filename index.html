@@ -6,10 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>朋友圈</title>
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/weui.min.css">
-    <link rel="stylesheet" href="./css/jquery-weui.min.css">
-    <link rel="stylesheet" href="./css/index.css">
+    <script>
+        let _fontSize;
+
+        function fontSize() {
+            let _html = document.getElementsByTagName("html")[0];
+            let deviceWidth = _html.getBoundingClientRect().width;
+            _html.style.fontSize = deviceWidth / 375 * 100 + "px";
+            _fontSize = deviceWidth / 375 * 100;
+        }
+        fontSize();
+        window.onresize = function() {
+            fontSize();
+        };
+    </script>
+    <link rel="stylesheet" href="/static/pengyouquan/css/reset.css">
+    <link rel="stylesheet" href="/static/pengyouquan/css/weui.min.css">
+    <link rel="stylesheet" href="/static/pengyouquan/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/static/pengyouquan/css/index.css">
 </head>
 
 <body>
@@ -21,13 +35,13 @@
         <div class="up">释放刷新</div>
         <div class="refresh">正在刷新</div>
     </div>
-    <div class="container">
+    <div class="container" id="container">
         <div class="head">
-            <div class="camera">
-                <img src="./imgs/camera.png" alt="发布">
+            <div class="camera" id="camera">
+                <img src="/static/pengyouquan/imgs/camera.png" alt="发布">
             </div>
             <div class="avatar">
-                <img src="./imgs/a1.jpg" alt="头像">
+                <img src="/static/pengyouquan/imgs/a1.jpg" alt="头像">
             </div>
             <p class="nickName">西装暴徒</p>
         </div>
@@ -36,7 +50,7 @@
             <ul class="content_ul">
                 <!-- <li class="item">
                     <div class="item-avatar">
-                        <img src="./imgs/a1.jpg" alt="头像">
+                        <img src="/static/pengyouquan/imgs/a1.jpg" alt="头像">
                     </div>
                     <div class="item-content">
                         <p class="title">麻花藤tony</p>
@@ -47,91 +61,12 @@
                         <div class="more"><span>全文</span></div>
                         <ul class="imgs">
                             <li class="item-imgs">
-                                <img src="./imgs/1.jpg" alt="">
+                                <img src="/static/pengyouquan/imgs/1.jpg" alt="">
                             </li>
                         </ul>
                         <p class="time">1小时前</p>
                     </div>
-                </li>
-                <li class="item">
-                    <div class="item-avatar">
-                        <img src="./imgs/chuan1.png" alt="头像">
-                    </div>
-                    <div class="item-content">
-                        <p class="title">麻花藤</p>
-                        <div class="txt"> 用心创造快乐，没钱玩你麻痹
-                            <br> 用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹
-                            <br>用心创造快乐，没钱玩你麻痹</div>
-                        <div class="more">全文</div>
-                        <ul class="imgs">
-
-                            <li class="item-imgs">
-                                <img src="./imgs/1.jpg" alt="">
-                            </li>
-                            <li class="item-imgs">
-                                <img src="./imgs/2.jpg" alt="">
-                            </li>
-                        </ul>
-                        <p class="time">1小时前</p>
-                    </div>
-                </li>
-                <li class="item">
-                    <div class="item-avatar">
-                        <img src="./imgs/my.jpg" alt="头像">
-                    </div>
-                    <div class="item-content">
-                        <p class="title">麻花藤</p>
-                        <div class="txt">猜猜我是谁？</div>
-                        <div class="more">全文</div>
-                        <ul class="imgs">
-                            <li class="item-imgs">
-                                <img src="./imgs/111.png" alt="">
-                            </li>
-                            <li class="item-imgs">
-                                <img src="./imgs/avatar.jpg" alt="">
-                            </li>
-                            <li class="item-imgs">
-                                <img src="./imgs/image.jpg" alt="">
-                            </li>
-                            <li class="item-imgs">
-                                <img src="./imgs/22.jpg" alt="">
-                            </li>
-                        </ul>
-                        <p class="time">1小时前</p>
-                    </div>
-                </li>
-                <li class="item">
-                    <div class="item-avatar">
-                        <img src="./imgs/mht.jpg" alt="头像">
-                    </div>
-                    <div class="item-content">
-                        <p class="title">麻花藤</p>
-                        <div class="txt">猜猜我是谁？</div>
-                        <div class="more">全文</div>
-                        <ul class="imgs">
-                            <li class="item-imgs">
-                                <img src="./imgs/1.jpg" alt="">
-                            </li>
-                            <li class="item-imgs">
-                                <img src="./imgs/2.jpg" alt="">
-                            </li>
-                            <li class="item-imgs">
-                                <img src="./imgs/3.jpg" alt="">
-                            </li>
-                            <li class="item-imgs">
-                                <img src="./imgs/4.jpg" alt="">
-                            </li>
-                            <li class="item-imgs">
-                                <img src="./imgs/5.jpg" alt="">
-                            </li>
-                        </ul>
-                        <p class="time">1小时前</p>
-                    </div>
-                </li> -->
+                </li>-->
             </ul>
         </div>
     </div>
@@ -139,10 +74,55 @@
         <i class="weui-loading"></i>
         <span class="weui-loadmore__tips">正在加载</span>
     </div>
+
+    <!-- 发布朋友圈 -->
+    <div class="publish" id="publish">
+        <div class="weui-cells__title tool">
+            <div class="tool-cancel" id="cancel">取消</div>
+            <div class="tool-publish" id="express">发布</div>
+        </div>
+        <div class="weui-cells weui-cells_form myForm">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <textarea id="shuoshuo" class="weui-textarea" rows="6" cols="5" wrap="hard" placeholder="请输入你想说的"></textarea>
+                    <!-- <div class="weui-textarea-counter">
+                        <span id="textNum">0</span>/200</div> -->
+                </div>
+            </div>
+        </div>
+        <div class="weui-gallery" id="gallery">
+            <span class="weui-gallery__img" id="galleryImg"></span>
+            <div class="weui-gallery__opr">
+                <a href="javascript:" class="weui-gallery__del">
+                    <i class="weui-icon-delete weui-icon_gallery-delete"></i>
+                </a>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_form my-upload">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <div class="weui-uploader">
+                        <div class="weui-uploader__hd">
+                            <p class="weui-uploader__title">图片上传</p>
+                            <div class="weui-uploader__info">0/9</div>
+                        </div>
+                        <div class="weui-uploader__bd">
+                            <ul class="weui-uploader__files" id="uploaderFiles">
+                                <li class="weui-uploader__file" style="background-image:url('/static/pengyouquan/imgs/1.jpg')"></li>
+                            </ul>
+                            <div class="weui-uploader__input-box">
+                                <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-<script src="./js/jquery.min.js"></script>
-<script src="./js/jquery-weui.min.js"></script>
-<script src="./js/swiper.min.js"></script>
-<script src="./js/index.js?1"></script>
+<script src="/static/pengyouquan/js/jquery.min.js"></script>
+<script src="/static/pengyouquan/js/jquery-weui.min.js"></script>
+<script src="/static/pengyouquan/js/swiper.min.js"></script>
+<script src="/static/pengyouquan/js/index.js"></script>
 
 </html>
