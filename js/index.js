@@ -26,7 +26,7 @@ function getMessages(page) {
                     ul.className = "imgs";
                     let imgsArr = [];
                     let PromiseALl = []; //每个人所有图片异步操作
-                    $("#content .content_ul").append(`<li class = "item"> <div class = "item-avatar"> <img src = "${data[i].avatar}" alt = "头像" > </div> <div class = "item-content" > <p class = "title" > ${data[i].title} </p> <div class = "txt" > ${data[i].txt} </div> <div class = "more" > <span > 全文 </span></div ><div class="imgs-box"></div><p class = "time" > ${data[i].time}</p> </div> </li> `);
+                    $("#content .content_ul").append(`<li class = "item"> <div class = "item-avatar"> <img src = "${data[i].avatar}" alt = "头像" > </div> <div class = "item-content" > <p class = "title" > ${data[i].title} </p> <div class = "txt" > ${getFormatCode(data[i].txt)} </div> <div class = "more" > <span > 全文 </span></div ><div class="imgs-box"></div><p class = "time" > ${data[i].time}</p> </div> </li> `);
                     //这里很关键，需要加上分页的值
                     // console.log("现在是", i + (10 * page))
                     let box = $("#content .content_ul .imgs-box").eq(i + (10 * page));
@@ -165,21 +165,6 @@ $(document.body).infinite().on("infinite", function() {
     getMessages(page);
     // setImgsSize()
 });
-/*  发布 */
-$("#camera").on("click", function() {
-    $("#publish").show();
-    $("#publish").animate({
-        'top': 0
-    });
-    $('body').css({
-        "height": "100%"
-    });
-    $('html').css("height", "100%");
-    $('html,body').css('overflow', 'hidden');
-});
-
-
-
 
 
 /* ----------------------------------------------朋友圈功能----------------------------------------------------- */
@@ -196,6 +181,9 @@ $("#cancel").on("click", function() {
                 },
                 function() {
                     $("#publish").hide();
+                    // 清空发表页面
+                    $("#uploaderFiles").empty();
+                    $("#shuoshuo").val("");
                 });
             $('html,body').css('overflow', '');
         },
@@ -203,7 +191,6 @@ $("#cancel").on("click", function() {
     });
 
 });
-
 
 /* 上传图片 */
 $(function() {
@@ -215,15 +202,31 @@ $(function() {
     var formDataFaker = [];
     // 允许上传的图片类型  
     var allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
-    // 1024KB，也就是 1MB  
-    var maxSize = 2048 * 2048;
+    // 1024*2KB，也就是 2MB  
+    var maxSize = 2048 * 1024;
     // 图片最大宽度  
     var maxWidth = 10000;
     // 最大上传图片数量  
     var maxCount = 9;
-
+    // 声明承诺
+    let p = [];
+    /*  发布 */
+    $("#camera").on("click", function() {
+        counts();
+        $("#publish").show();
+        $("#publish").animate({
+            'top': 0
+        });
+        $('body').css({
+            "height": "100%"
+        });
+        $('html').css("height", "100%");
+        $('html,body').css('overflow', 'hidden');
+    });
     /* 控制添加图片按钮的显示 */
     function counts() {
+        var num = $('.weui-uploader__file').length;
+        $('.weui-uploader__info').text(num + '/' + maxCount); //多少张图片
         if ($('.weui-uploader__file').length >= maxCount) {
             $(".weui-uploader__input-box").css("display", "none");
             return false;
@@ -231,8 +234,25 @@ $(function() {
             $(".weui-uploader__input-box").css("display", "block")
         }
     }
+    //获取图片方向
+    // function getPhotoOrientation(img) {
+    //     var orient;
+    //     EXIF.getData(img, function() {
+    //         orient = EXIF.getTag(this, 'Orientation');
+    //     });
+    //     // alert(orient)
+    //     return orient;
+    // }
+    let orient;
     /* 选完图片后的事件 */
     $('#uploaderInput').on('change', function(event) {
+        // 检查ios拍照是否 旋转bug  ===6
+        EXIF.getData(event.target.files[0], function() {
+            console.log(EXIF.getTag(this, "Orientation"));
+            console.log(EXIF.getAllTags(this).Orientation);
+            orient = EXIF.getAllTags(this).Orientation
+        });
+
         var files = event.target.files;
         console.log(files)
         let totalCounts = parseInt($('.weui-uploader__file').length + files.length);
@@ -242,12 +262,8 @@ $(function() {
             console.log(totalCounts)
             if (totalCounts === 9) {
                 $(".weui-uploader__input-box").css("display", "none");
-                console.log("等于");
-
             } else {
                 $(".weui-uploader__input-box").css("display", "block")
-                console.log("大于");
-
             }
             //console.log(files);return false;
             // 如果没有选中文件，直接返回  
@@ -257,8 +273,8 @@ $(function() {
             for (var i = 0, len = files.length; i < len; i++) {
                 var file = files[i];
                 var reader = new FileReader();
-
-                // 如果类型不在允许的类型范围内  
+                console.log(file)
+                    // 如果类型不在允许的类型范围内  
                 if (allowTypes.indexOf(file.type) === -1) {
                     $.alert("该类型不允许上传！", "警告！");
                     continue;
@@ -268,6 +284,7 @@ $(function() {
                     $.alert("图片太大，不允许上传", "警告！");
                     continue;
                 }
+                // p[i] = new Promise((resolve, reject) => {
                 /* 将文件读取为 DataURL */
                 reader.readAsDataURL(file);
                 // 文件读取成功完成时触发
@@ -275,6 +292,7 @@ $(function() {
                     console.log(e);
                     var img = new Image();
                     img.src = e.target.result;
+
                     img.onload = function() {
                         // 不要超出最大宽度  
                         var w = Math.min(maxWidth, img.width);
@@ -285,11 +303,20 @@ $(function() {
                         // 设置 canvas 的宽度和高度  
                         canvas.width = w;
                         canvas.height = h;
-                        ctx.drawImage(img, 0, 0, w, h);　　　　　　　　　　　　
+                        //如果图片方向等于6 ，则旋转矫正，反之则不做处理
+                        if (orient == 6) {
+                            canvas.width = h;
+                            canvas.height = w;
+                            ctx.rotate(Math.PI / 2);
+                            ctx.drawImage(img, 0, -h, w, h);
+                        } else {
+                            ctx.drawImage(img, 0, 0, w, h);
+                        }
+                        // ctx.drawImage(img, 0, 0, w, h);　　　　　　　　　　　　
                         var base64 = canvas.toDataURL('image/jpeg', 0.8);
                         //console.log(base64);
                         // 插入到预览区  
-                        var $preview = $('<li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(' + img.src + ')"><div class="weui-uploader__file-content">0%</div></li>');
+                        var $preview = $('<li class="weui-uploader__file weui-uploader__file_status" style="background-image:url(' + base64 + ')"><div class="weui-uploader__file-content">0%</div></li>');
                         $('#uploaderFiles').append($preview);
                         var num = $('.weui-uploader__file').length;
                         $('.weui-uploader__info').text(num + '/' + maxCount); //多少张图片
@@ -307,39 +334,49 @@ $(function() {
                             }
                         }
                         setTimeout(uploading, 30);
+                        // resolve(base64);
                         formDataFaker.push(base64);
                     };
                 };
+                // })
             }
+            // Promise.all(p).then((res) => {
+            //     console.log(res);
 
-            var index; //第几张图片  
+            // }).catch((reason) => {
+            //     console.log(reason);
 
-            /* 点击放大图片 */
-            $uploaderFiles.on("click", "li", function() {
-                index = $(this).index();
-                $galleryImg.attr("style", this.getAttribute("style"));
-                $gallery.fadeIn(100);
-
-            });
-            $gallery.on("click", function() {
-                $gallery.fadeOut(100);
-            });
-
-            //删除图片  
-            $(".weui-gallery__del").click(function() {
-                console.log(index)
-                $uploaderFiles.find("li").eq(index).remove();
-                formDataFaker.splice(index, 1);
-                counts();
-            });
-
+            // })
         }
     });
 
+    var index; //第几张图片  
+
+    /* 点击放大图片 */
+    $uploaderFiles.on("click", "li", function() {
+        index = $(this).index();
+        $galleryImg.attr("style", this.getAttribute("style"));
+        $gallery.fadeIn(100);
+
+    });
+    $gallery.on("click", function() {
+        $gallery.fadeOut(100);
+    });
+
+    //删除图片  
+    $(".weui-gallery__del").click(function() {
+        console.log(index)
+        $uploaderFiles.find("li").eq(index).remove();
+        formDataFaker.splice(index, 1);
+        counts();
+    });
     /* 发表朋友圈 */
     $("#express").click(function() {
+        //如果有原先数据，先删除
         if (formData.has("images")) {
-            formData.delete("images");
+            formData.delete("images")
+        } else if (formData.has("content")) {
+            formData.delete("content")
         }
         for (let i = 0; i < formDataFaker.length; i++) {
             formData.append("images", formDataFaker[i]);
@@ -348,15 +385,26 @@ $(function() {
         console.log($("#shuoshuo").val())
         console.log(formData)
         $.ajax({
-            url: "savetofile.php",
+            url: "savetofile.php", //待写
             type: 'POST',
             data: formData,
             contentType: false,
             processData: false,
-            success: function(data) {
-                $preview.removeClass('weui-uploader__file_status');
-                $.toast("上传成功", function() {
+            success: function(res) {
+                $.toast("发布成功", function() {
                     //console.log('close');
+                    $("#publish").animate({
+                            'top': $(window).height()
+                        },
+                        function() {
+                            $("#publish").hide();
+                        });
+                    $('html,body').css('overflow', '');
+                    $("#content .content_ul").empty();
+                    // 清空发表页面
+                    $("#uploaderFiles").empty();
+                    $("#shuoshuo").val("");
+                    getMessages(0);
                 });
             },
             error: function(xhr, type) {
@@ -365,3 +413,8 @@ $(function() {
         });
     })
 });
+
+//正则替换空格和换行
+var getFormatCode = function(strValue) {
+    return strValue.replace(/\r\n/g, '<br/>').replace(/\n/g, '<br/>').replace(/\s/g, '&nbsp;');
+}
