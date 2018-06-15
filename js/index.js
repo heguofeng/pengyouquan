@@ -5,14 +5,18 @@ window.onload = function() {
 }
 
 let page = 0; //从多少开始渲染
+let pageNums = 10;
+
 function getMessages(page) {
     // console.log(page)
     $.ajax({
         type: "get",
-        url: "https://www.easy-mock.com/mock/5b0f64deb0c1263f2ec2237d/pyq/pyq",
-        // url: "./data.json",
+        // url: "https://www.easy-mock.com/mock/5b0f64deb0c1263f2ec2237d/pyq/pyq", //待写
+        url: "http://work.zjqq.mobi/farmer/get-friend-data",
         data: {
-            page: page
+            page: page,
+            pageNums: pageNums,
+            type: 1
         },
         dataType: "json",
         success: res => {
@@ -28,8 +32,8 @@ function getMessages(page) {
                     let PromiseALl = []; //每个人所有图片异步操作
                     $("#content .content_ul").append(`<li class = "item"> <div class = "item-avatar"> <img src = "${data[i].avatar}" alt = "头像" > </div> <div class = "item-content" > <p class = "title" > ${data[i].title} </p> <div class = "txt" > ${getFormatCode(data[i].txt)} </div> <div class = "more" > <span > 全文 </span></div ><div class="imgs-box"></div><p class = "time" > ${data[i].time}</p> </div> </li> `);
                     //这里很关键，需要加上分页的值
-                    // console.log("现在是", i + (10 * page))
-                    let box = $("#content .content_ul .imgs-box").eq(i + (10 * page));
+                    // console.log("现在是", i + (pageNums * page))
+                    let box = $("#content .content_ul .imgs-box").eq(i + (pageNums * page));
                     for (let j = 0; j < imgsA.length; j++) {
                         let imgsNums = imgsA.length;
                         // console.log(imgsNums)
@@ -102,7 +106,7 @@ function getMessages(page) {
 
 //  1 4 9三种不同的情况设置图片尺寸
 function setImgsSize(page) {
-    $(".item").slice(page * 10).each(function() {
+    $(".item").slice(page * pageNums).each(function() {
         let lines = parseInt($(this).find('.txt').css("height")) / parseInt($(this).find('.txt').css('line-height'));
         // console.log(lines)
         //如果小于6行文字
@@ -168,14 +172,19 @@ $(document.body).infinite().on("infinite", function() {
 
 
 /* ----------------------------------------------朋友圈功能----------------------------------------------------- */
-
-
+var formData = new FormData();
+var formDataFaker = [];
 /*  取消 */
 $("#cancel").on("click", function() {
     $.confirm({
         title: '确定退出？',
         text: '退出后不保存任何编辑数据',
         onOK: function() {
+            formData.delete('images')
+            formData.delete('content')
+            formDataFaker = [];
+            console.log(formDataFaker)
+            console.log(formData)
             $("#publish").animate({
                     'top': $(window).height()
                 },
@@ -198,8 +207,8 @@ $(function() {
         $galleryImg = $("#galleryImg"),
         $uploaderInput = $("#uploaderInput"),
         $uploaderFiles = $("#uploaderFiles");
-    var formData = new FormData();
-    var formDataFaker = [];
+
+
     // 允许上传的图片类型  
     var allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
     // 1024*2KB，也就是 2MB  
@@ -234,22 +243,14 @@ $(function() {
             $(".weui-uploader__input-box").css("display", "block")
         }
     }
-    //获取图片方向
-    // function getPhotoOrientation(img) {
-    //     var orient;
-    //     EXIF.getData(img, function() {
-    //         orient = EXIF.getTag(this, 'Orientation');
-    //     });
-    //     // alert(orient)
-    //     return orient;
-    // }
+
     let orient;
     /* 选完图片后的事件 */
     $('#uploaderInput').on('change', function(event) {
         // 检查ios拍照是否 旋转bug  ===6
         EXIF.getData(event.target.files[0], function() {
-            console.log(EXIF.getTag(this, "Orientation"));
-            console.log(EXIF.getAllTags(this).Orientation);
+            // console.log(EXIF.getTag(this, "Orientation"));
+            // console.log(EXIF.getAllTags(this).Orientation);
             orient = EXIF.getAllTags(this).Orientation
         });
 
@@ -257,9 +258,9 @@ $(function() {
         console.log(files)
         let totalCounts = parseInt($('.weui-uploader__file').length + files.length);
         if ((totalCounts) > maxCount) {
-            $.alert("最多上传九张图片")
+            $.alert("最多上传九张图片");
         } else {
-            console.log(totalCounts)
+            // console.log(totalCounts)
             if (totalCounts === 9) {
                 $(".weui-uploader__input-box").css("display", "none");
             } else {
@@ -289,7 +290,7 @@ $(function() {
                 reader.readAsDataURL(file);
                 // 文件读取成功完成时触发
                 reader.onload = function(e) {
-                    console.log(e);
+                    // console.log(e);
                     var img = new Image();
                     img.src = e.target.result;
 
@@ -370,19 +371,20 @@ $(function() {
         formDataFaker.splice(index, 1);
         counts();
     });
+
+
     /* 发表朋友圈 */
     $("#express").click(function() {
         //如果有原先数据，先删除
-        if (formData.has("images")) {
-            formData.delete("images")
-        } else if (formData.has("content")) {
-            formData.delete("content")
-        }
+        formData.delete("images")
+        formData.delete("content")
+            // 此处填写ajax的data
         for (let i = 0; i < formDataFaker.length; i++) {
-            formData.append("images", formDataFaker[i]);
+            formData.append("images[]", formDataFaker[i]);
         }
         formData.append("content", $("#shuoshuo").val());
-        console.log($("#shuoshuo").val())
+
+        // console.log($("#shuoshuo").val())
         console.log(formData)
         $.ajax({
             url: "savetofile.php", //待写
@@ -391,8 +393,9 @@ $(function() {
             contentType: false,
             processData: false,
             success: function(res) {
+                console.log(res);
                 $.toast("发布成功", function() {
-                    //console.log('close');
+
                     $("#publish").animate({
                             'top': $(window).height()
                         },

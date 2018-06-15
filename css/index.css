@@ -4,12 +4,32 @@
     background-color: #fff;
 }
 
+.theme {
+    font-size: 0.5rem;
+    color: #fff;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.head .cover {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: #000;
+    opacity: 0.3;
+    z-index: 0;
+}
+
 .head {
     height: 2.55rem;
     width: 100%;
     /* overflow: hidden; */
     box-sizing: border-box;
-    background: #000 url("/static/pengyouquan/imgs/6.jpg") no-repeat;
+    background: #000 url("/static/pengyouquan/imgs/sys/bg.jpg") no-repeat;
     background-size: cover;
     background-position: bottom left;
     position: relative;
